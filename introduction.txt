@@ -1,0 +1,69 @@
+In this project I tried to create a blockChain system as close as possible to a real blockChain for educational purposes.
+This mini project is still being improved so certain parts have been reduced (especially on Miners and sequence of actions)
+
+Before starting to read the classes, I will explain to you some fundamental concepts in economics and cryptography
+which will help you better understand what the blockchain represents.
+
+    Ledger:
+
+    To understand what a blockchain is, it's important to first explore the concept of a "ledger".
+
+    A ledger is a register in which several transactions occurring over time are recorded.
+    Each transaction records a transfer of value, including a sender, a recipient, the amount transferred, and a timestamp.
+
+    The ledger is public within the blockchain network (see [Proof of Work] (link to PoW explanation) for more details on network participants) and immutable.
+    This means that anyone can observe the transactions taking place there, although the identities of the participants are often anonymized (we will see how this works later).
+
+    In the context of a blockchain, this ledger is implemented in the form of blocks, each linked to the previous one. A block is made up of:
+
+    - a list of transactions
+    - a hash of the previous block (see [Hashing and SHA-256](link to explanation))
+    - a timestamp
+    - and a proof of work ([Proof of Work](link to PoW explanation))
+
+    Hashing and SHA-256 :
+
+    To understand a key concept of blockchain, it is essential to understand what a "hash" is.
+      A hash is a unique fingerprint generated from a given piece of information, whether it is a word, a number, or even an entire file.
+      It transforms this information into a fixed-length character string, regardless of the size or type of the original information.
+      In this project, I use the java.security API to access hashing algorithms, including SHA-256.
+      The latter produces a string of 64 hexadecimal characters, representing the digital fingerprint of the information.
+      This hashing process is deterministic, meaning that the same input will always give the same hash,
+       but it is virtually impossible to find the original input from the hash alone.
+      Additionally, even a tiny change in the original information produces a completely different hash.
+
+
+    RSA encryption :
+
+    RSA is an asymmetric cryptography algorithm primarily used for signing transactions in blockchain systems.
+     The private key allows the owner to sign a message, while the public key is used to verify the signature's authenticity.
+
+
+    _1 What is a blockchain ?
+
+        Historically, blockchain was designed to solve problems related to centralized banking infrastructures.
+          Before that, ensuring the integrity of a financial system required trust in a central authority that managed financial information.
+          This model lacked transparency and was vulnerable to corruption or possible internal problems.
+
+        Blockchain was conceived as a decentralized system to ensure that transactions are both transparent (all transactions are publicly visible)
+          and secure (Thanks to cryptography, especially digital signatures)
+          without relying on a central authority.
+        Overall it is represented as follows:
+          - A block is a collection of transactions that are cryptographically linked to the previous block through a "hash," forming a chain.
+          - A transaction represents the exchange of UTXOs between two wallets, moving funds from one person to another.
+          - UTXOs (Unspent Transaction Outputs) are the remaining amounts from a previous transaction that have not yet been used in a new transaction.
+             Each UTXO is associated with a public key which identifies the owner of the funds.
+
+         Miners verify the cryptographic signature to ensure that the transaction was authorized by the rightful owner of the private key associated with the UTXO.
+          In systems like Bitcoin, miners also compete to solve complex mathematical problems in order to validate new blocks and earn rewards.
+
+        For instance, when Alice wants to send 1 Bitcoin to Bob, she creates a transaction that references Bob's public key.
+          A UTXO is created that shows Bob received 1 Bitcoin, and Alice's UTXO is marked as 'spent'.
+          The Miner checks if Alice's UTXO is available and has not been spent, if it's valid the UTXO is deleted from the register and Bob new UTXO is added.
+          The Miner check the signature and if it's valid the transaction is added to the block.
+
+         In Proof of Work systems like Bitcoin, Miners solve cryptographic puzzles to secure the blockchain by ensuring that each block requires computational effort,
+         making it difficult to alter past transactions.
+         The first one to solve it gets to add a new block to the blockchain, which is then validated by the network participants.
+
+         In short, the blockchain represents a public database.
