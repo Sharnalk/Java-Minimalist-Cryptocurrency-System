@@ -3,6 +3,7 @@ package org.sharnalk;
 import java.nio.ByteBuffer;
 import java.security.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,8 @@ public class Wallet {
         initialUTXO.setTxId(asBytes(UUID.randomUUID())); // Generate a random txId for initialization
         Miner.getInstance().setGlobalUnspentOutputs(initialUTXO);
         unspentOutputs.add(initialUTXO);
+        WalletFactory.getInstance().addWallet(this);
+        System.out.println("This is your PublicKey : " + Base64.getEncoder().encodeToString(publicKey.getEncoded()));
     }
 
     /**
@@ -158,5 +161,16 @@ public class Wallet {
 
     protected void addUTXO(UTXO utxo){
         unspentOutputs.add(utxo);
+    }
+
+    /**
+     * Used for see all outputs of Wallet, used only in console
+     */
+    public String getAllUnspentOutputsConsole(){
+        StringBuilder result = new StringBuilder();
+        for (var utxo : unspentOutputs) {
+            result.append("UTXOs : ").append(utxo.getAmount());
+        }
+        return result.toString();
     }
 }
